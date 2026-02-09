@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw
 
 def create_flame_icon(size):
-    """Create a red flame icon matching the Lucide Flame design"""
+    """Create a solid red flame icon"""
     img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     
@@ -11,35 +11,33 @@ def create_flame_icon(size):
     # Red color matching RMG theme
     red = (230, 57, 70, 255)
     
-    # Lucide Flame path simplified to drawable shapes
-    # Main flame body
+    # Simplified flame shape - filled polygon
     points = [
-        (8.5*scale, 14.5*scale),
-        (11*scale, 12*scale),
-        (10*scale, 9*scale),
-        (12*scale, 6*scale),
-        (14*scale, 12.5*scale),
-        (17*scale, 14*scale),
-        (18*scale, 15*scale),
-        (18*scale, 17*scale),
-        (12*scale, 21*scale),
-        (6*scale, 17*scale),
-        (6*scale, 15*scale),
-        (8.5*scale, 14.5*scale)
+        (12*scale, 4*scale),   # Top point
+        (16*scale, 8*scale),   # Right upper
+        (18*scale, 12*scale),  # Right middle
+        (17*scale, 16*scale),  # Right lower
+        (14*scale, 20*scale),  # Bottom right
+        (12*scale, 22*scale),  # Bottom center
+        (10*scale, 20*scale),  # Bottom left
+        (7*scale, 16*scale),   # Left lower
+        (6*scale, 12*scale),   # Left middle
+        (8*scale, 8*scale),    # Left upper
     ]
     
-    # Draw flame outline
-    draw.polygon(points, outline=red, width=max(2, int(2*scale)))
+    # Draw filled flame
+    draw.polygon(points, fill=red)
     
-    # Add inner detail
+    # Add inner lighter flame for depth
     inner_points = [
-        (11*scale, 14*scale),
-        (12*scale, 12*scale),
-        (13*scale, 14*scale),
-        (12*scale, 16*scale),
-        (11*scale, 14*scale)
+        (12*scale, 8*scale),
+        (14*scale, 11*scale),
+        (13*scale, 15*scale),
+        (12*scale, 17*scale),
+        (11*scale, 15*scale),
+        (10*scale, 11*scale),
     ]
-    draw.polygon(inner_points, fill=red)
+    draw.polygon(inner_points, fill=(255, 107, 107, 255))
     
     return img
 
