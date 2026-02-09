@@ -1,0 +1,15 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Temporary files
+*.log
+*.tmp
+
+# Build artifacts (if we add build process later)
+dist/
+build/

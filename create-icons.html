@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate RMG Bridge Icons</title>
+</head>
+<body>
+    <h1>RMG Ollama Bridge Icon Generator</h1>
+    <p>Creating placeholder icons...</p>
+    <canvas id="canvas16" width="16" height="16" style="display:none;"></canvas>
+    <canvas id="canvas48" width="48" height="48" style="display:none;"></canvas>
+    <canvas id="canvas128" width="128" height="128" style="display:none;"></canvas>
+    
+    <div id="downloads"></div>
+    
+    <script>
+        function createIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Background - dark blue/black
+            ctx.fillStyle = '#1a2332';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Red border
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = Math.max(1, size / 16);
+            ctx.strokeRect(ctx.lineWidth/2, ctx.lineWidth/2, size - ctx.lineWidth, size - ctx.lineWidth);
+            
+            // Draw sword icon (simplified)
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = Math.max(2, size / 8);
+            ctx.lineCap = 'round';
+            
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const swordLength = size * 0.6;
+            
+            // Sword blade
+            ctx.beginPath();
+            ctx.moveTo(centerX - swordLength/3, centerY + swordLength/3);
+            ctx.lineTo(centerX + swordLength/3, centerY - swordLength/3);
+            ctx.stroke();
+            
+            // Sword guard
+            ctx.beginPath();
+            ctx.moveTo(centerX - swordLength/4, centerY);
+            ctx.lineTo(centerX + swordLength/4, centerY);
+            ctx.stroke();
+            
+            return canvas;
+        }
+        
+        function downloadIcon(canvas, filename) {
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.textContent = `Download ${filename}`;
+                a.style.display = 'block';
+                a.style.margin = '10px';
+                document.getElementById('downloads').appendChild(a);
+                a.click();
+            });
+        }
+        
+        // Generate all icons
+        setTimeout(() => {
+            downloadIcon(createIcon(16), 'icon16.png');
+            downloadIcon(createIcon(48), 'icon48.png');
+            downloadIcon(createIcon(128), 'icon128.png');
+            document.querySelector('p').textContent = 'Icons generated! Check your downloads folder.';
+        }, 100);
+    </script>
+</body>
+</html>
