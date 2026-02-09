@@ -29,16 +29,41 @@ async function injectOllamaModels() {
 // Inject on load
 injectOllamaModels();
 
-// Listen for requests from page
+// Listen for requests from the page
 window.addEventListener('message', (event) => {
-  // Only accept messages from same window
-  if (event.source !== window) return;
+  // Only accept messages from same origin
+  if (event.source !== window) return
   
-  console.log('🔔 RMG Bridge: Received message:', event.data.type);
+  console.log('🔔 RMG Bridge: Received message:', event.data.type)
   
   if (event.data.type === 'RMG_REQUEST_OLLAMA_MODELS') {
-    console.log('🔄 RMG Bridge: Page requested model refresh');
-    injectOllamaModels();
+    console.log('🔄 RMG Bridge: Page requested model refresh')
+    injectOllamaModels()
+  }
+  
+  // Proxy Ollama API requests
+  if (event.data.type === 'RMG_OLLAMA_API_REQUEST') {
+    console.log('🔄 RMG Bridge: Proxying Ollama API request to', event.data.endpoint)
+    
+    chrome.runtime.sendMessage({
+      type: 'OLLAMA_API_REQUEST',
+      endpoint: event.data.endpoint,
+      method: event.data.method,
+      body: event.data.body,
+      requestId: event.data.requestId
+    }, (response) => {
+      // Send response back to page
+      window.postMessage({
+        type: 'RMG_OLLAMA_API_RESPONSE',
+        requestId: event.data.requestId,
+        success: response.success,
+        data: response.data,
+        error: response.error,
+        source: 'rmg-ollama-bridge'
+      }, '*')
+      
+      console.log('✅ RMG Bridge: Sent API response back to page')
+    })
   }
 });
 

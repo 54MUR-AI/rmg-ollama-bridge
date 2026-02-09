@@ -78,6 +78,36 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     fetchOllamaModels().then(sendResponse);
     return true;
   }
+  
+  // Proxy Ollama API requests
+  if (request.type === 'OLLAMA_API_REQUEST') {
+    const { endpoint, method = 'POST', body } = request;
+    
+    console.log('🔄 RMG Bridge: Proxying API request to', endpoint);
+    
+    fetch(`${OLLAMA_API}${endpoint}`, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined
+    })
+      .then(response => response.json())
+      .then(data => {
+        sendResponse({
+          success: true,
+          data: data
+        });
+      })
+      .catch(error => {
+        sendResponse({
+          success: false,
+          error: error.message
+        });
+      });
+    
+    return true; // Keep channel open for async response
+  }
 });
 
 // Periodically check Ollama status
