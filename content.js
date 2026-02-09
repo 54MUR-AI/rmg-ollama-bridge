@@ -34,6 +34,8 @@ window.addEventListener('message', (event) => {
   // Only accept messages from same window
   if (event.source !== window) return;
   
+  console.log('🔔 RMG Bridge: Received message:', event.data.type);
+  
   if (event.data.type === 'RMG_REQUEST_OLLAMA_MODELS') {
     console.log('🔄 RMG Bridge: Page requested model refresh');
     injectOllamaModels();
