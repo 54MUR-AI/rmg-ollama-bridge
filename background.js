@@ -84,6 +84,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { endpoint, method = 'POST', body } = request;
     
     console.log('🔄 RMG Bridge: Proxying API request to', endpoint);
+    console.log('📦 RMG Bridge: Request body:', body);
     
     fetch(`${OLLAMA_API}${endpoint}`, {
       method: method,
@@ -92,14 +93,33 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       },
       body: body ? JSON.stringify(body) : undefined
     })
-      .then(response => response.json())
-      .then(data => {
-        sendResponse({
-          success: true,
-          data: data
-        });
+      .then(async response => {
+        console.log('📡 RMG Bridge: Response status:', response.status, response.statusText);
+        
+        if (!response.ok) {
+          throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
+        }
+        
+        const text = await response.text();
+        console.log('📄 RMG Bridge: Response text:', text.substring(0, 200));
+        
+        try {
+          const data = JSON.parse(text);
+          console.log('✅ RMG Bridge: Successfully parsed JSON response');
+          sendResponse({
+            success: true,
+            data: data
+          });
+        } catch (parseError) {
+          console.error('❌ RMG Bridge: JSON parse error:', parseError.message);
+          sendResponse({
+            success: false,
+            error: `Failed to parse response: ${parseError.message}`
+          });
+        }
       })
       .catch(error => {
+        console.error('❌ RMG Bridge: Fetch error:', error.message);
         sendResponse({
           success: false,
           error: error.message

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "RMG Ollama Bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detects your local Ollama models and makes them available in RMG apps (SCRP, OMNI)",
   "permissions": [
     "storage"
