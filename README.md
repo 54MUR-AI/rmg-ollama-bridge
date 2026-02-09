@@ -1,6 +1,6 @@
 # RMG Ollama Bridge Extension
 
-A lightweight Chrome/Edge browser extension that connects RMG web applications (SCRP, OMNI, LDGR) to your local Ollama installation.
+A lightweight Chrome/Edge browser extension that detects your locally installed Ollama models and makes them available in RMG web applications (SCRP, OMNI).
 
 ## Features
 
@@ -38,8 +38,9 @@ A lightweight Chrome/Edge browser extension that connects RMG web applications (
 
 - ✅ **SCRP** (Web Scraper) - `scraper.onrender.com`
 - ✅ **OMNI** (Code Assistant) - `omni-lite.onrender.com`
-- ✅ **LDGR** (Ledger) - `roninmedia.studio`
 - ✅ **Local Development** - `localhost:*`
+
+**Note:** LDGR is not part of Ollama integration. LDGR securely stores and serves API keys for cloud AI providers (OpenAI, Anthropic, xAI, etc.) to RMG apps.
 
 ## Requirements
 
