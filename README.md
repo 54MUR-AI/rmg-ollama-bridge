@@ -1,10 +1,10 @@
-# RMG Ollama Bridge Extension
+# RMG Bridge Extension
 
-A lightweight Chrome/Edge browser extension that detects your locally installed Ollama models and makes them available in RMG web applications (SCRP, OMNI).
+A lightweight Chrome/Edge browser extension that bridges local AI (Ollama), auth, and services to RMG web applications (NSIT, SCRP, OMNI, WSPR).
 
 ## Features
 
-- 🗡️ **Seamless Integration** - Works with all RMG apps automatically
+- ⚔️ **Seamless Integration** - Works with all RMG apps automatically
 - 🔄 **Auto-Detection** - Automatically detects locally installed Ollama models
 - 📦 **Smart Caching** - Caches model list for performance
 - 🔒 **Privacy First** - All data stays local, no external connections

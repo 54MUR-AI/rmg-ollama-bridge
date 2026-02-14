@@ -1,5 +1,5 @@
-// RMG Ollama Bridge - Background Script
-// Connects RMG web apps to local Ollama installation
+// RMG Bridge - Background Script
+// Connects RMG web apps to local AI (Ollama) and services
 
 const OLLAMA_API = 'http://localhost:11434';
 let cachedModels = null;
@@ -136,5 +136,5 @@ setInterval(() => {
 }, 30000); // Check every 30 seconds
 
 // Initial fetch on extension load
-console.log('🗡️ RMG Ollama Bridge initialized');
+console.log('⚔️ RMG Bridge initialized');
 fetchOllamaModels();

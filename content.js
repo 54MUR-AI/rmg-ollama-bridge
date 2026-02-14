@@ -1,7 +1,7 @@
-// RMG Ollama Bridge - Content Script
-// Injects Ollama model data into RMG web pages
+// RMG Bridge - Content Script
+// Bridges local AI, auth, and services to RMG web pages
 
-console.log('🗡️ RMG Ollama Bridge content script loaded on', window.location.hostname);
+console.log('⚔️ RMG Bridge loaded on', window.location.hostname);
 
 // Inject models into page
 async function injectOllamaModels() {
