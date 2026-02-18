@@ -36,8 +36,10 @@ A lightweight Chrome/Edge browser extension that bridges local AI (Ollama), auth
 
 ## Supported Apps
 
-- ✅ **SCRP** (Web Scraper) - `scraper.onrender.com`
-- ✅ **OMNI** (Code Assistant) - `omni-lite.onrender.com`
+- ✅ **N-SIT** (Intelligence Dashboard) - `nsit-rmg.onrender.com` — AI Briefing, Predictions, Threat Assessment, Disaster Forecast
+- ✅ **SCRP** (Web Scraper) - `scrp-rmg.onrender.com` — AI summarization
+- ✅ **OMNI** (AI Chat) - `omni-rmg.onrender.com` — Multi-model chat
+- ✅ **RMG** (Parent App) - `roninmedia.studio`
 - ✅ **Local Development** - `localhost:*`
 
 **Note:** LDGR is not part of Ollama integration. LDGR securely stores and serves API keys for cloud AI providers (OpenAI, Anthropic, xAI, etc.) to RMG apps.
