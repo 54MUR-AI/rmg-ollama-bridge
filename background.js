@@ -22,7 +22,16 @@ async function fetchOllamaModels() {
     
     if (response.ok) {
       const data = await response.json();
-      const models = data.models.map(m => m.name);
+      // Filter out 0-byte stub models that Ollama can't actually run
+      const allModels = data.models || [];
+      const runnableModels = allModels.filter(m => m.size > 0);
+      const skipped = allModels.length - runnableModels.length;
+      const models = runnableModels.map(m => m.name);
+      
+      if (skipped > 0) {
+        const stubs = allModels.filter(m => m.size === 0).map(m => m.name);
+        console.log('⚠️ RMG Bridge: Skipped', skipped, '0-byte stub model(s):', stubs);
+      }
       
       cachedModels = {
         success: true,
@@ -32,7 +41,7 @@ async function fetchOllamaModels() {
       };
       lastFetch = now;
       
-      console.log('✅ RMG Bridge: Fetched', models.length, 'Ollama models:', models);
+      console.log('✅ RMG Bridge: Fetched', models.length, 'runnable Ollama models:', models);
       
       // Store in chrome.storage for persistence
       chrome.storage.local.set({ ollamaModels: cachedModels });
@@ -96,12 +105,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .then(async response => {
         console.log('📡 RMG Bridge: Response status:', response.status, response.statusText);
         
-        if (!response.ok) {
-          throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
-        }
-        
         const text = await response.text();
-        console.log('📄 RMG Bridge: Response text:', text.substring(0, 200));
+        console.log('📄 RMG Bridge: Response text:', text.substring(0, 500));
+        
+        if (!response.ok) {
+          // Include the actual error body from Ollama so frontend can diagnose
+          const errorDetail = text.substring(0, 500);
+          throw new Error(`Ollama API error: ${response.status} ${response.statusText} — ${errorDetail}`);
+        }
         
         try {
           const data = JSON.parse(text);
